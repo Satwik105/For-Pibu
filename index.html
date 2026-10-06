@@ -46,7 +46,7 @@
                                  C 430 30, 300 80, 300 170 Z" 
                               fill="none" />
 
-                        <!-- Heart ClipPath for the Center Photo (Scales photo perfectly inside heart) -->
+                        <!-- Heart ClipPath for the Center Photo -->
                         <clipPath id="heartCenterClip">
                             <path d="M 300 185 
                                      C 300 110, 190 70, 130 148 
@@ -68,10 +68,10 @@
                     <!-- Background Soft Shadow Heart -->
                     <use href="#heartPath" stroke="rgba(230, 0, 57, 0.18)" stroke-width="26" fill="none" />
 
-                    <!-- Center Photo embedded directly in SVG clipPath for 100% export reliability -->
+                    <!-- Center Photo embedded directly in SVG clipPath -->
                     <g clip-path="url(#heartCenterClip)" id="svgImageGroup">
                         <rect x="100" y="80" width="400" height="380" fill="#fce4ec" />
-                        <image id="svgHeartImage" href="assets/photo1.jpg" x="100" y="80" width="400" height="380" preserveAspectRatio="xMidYMid slice" />
+                        <image id="svgHeartImage" href="photo1.jpg" x="100" y="80" width="400" height="380" preserveAspectRatio="xMidYMid slice" />
                     </g>
 
                     <!-- Red Text Boundary repeating "everything will be fine pibu" -->
