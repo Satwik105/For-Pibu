@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Everything Will Be Fine, Pibu 💕</title>
+    <meta name="description" content="A romantic, reassuring webpage with a red text-heart dedicated to Pibu.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Great+Vibes&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Sniglet:wght@800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome icons for UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Floating Background Petals Container -->
+    <div id="petalsContainer" class="petals-container" aria-hidden="true"></div>
+
+    <!-- Main Content Layout -->
+    <main class="main-wrapper" id="captureArea">
+        
+        <!-- Top Header Message -->
+        <header class="header-banner">
+            <h1 class="main-title">For My Dearest Pibu</h1>
+            <p class="quote-text">“This should give you the reason to smile a lil more”</p>
+        </header>
+
+        <!-- Central Heart Stage -->
+        <section class="heart-stage-container">
+            
+            <!-- SVG Container holding Heart Text Boundary & Clipped Central Photo -->
+            <div class="heart-svg-wrapper">
+                <svg id="heartSvg" viewBox="0 0 600 580" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Heart Path for Text Outline -->
+                        <path id="heartPath" 
+                              d="M 300 170 
+                                 C 300 80, 170 30, 95 125 
+                                 C 20 220, 100 340, 300 480 
+                                 C 500 340, 580 220, 505 125 
+                                 C 430 30, 300 80, 300 170 Z" 
+                              fill="none" />
+
+                        <!-- Heart ClipPath for the Center Photo (Scales photo perfectly inside heart) -->
+                        <clipPath id="heartCenterClip">
+                            <path d="M 300 185 
+                                     C 300 110, 190 70, 130 148 
+                                     C 70 226, 130 322, 300 435 
+                                     C 470 322, 530 226, 470 148 
+                                     C 410 70, 300 110, 300 185 Z" />
+                        </clipPath>
+                        
+                        <!-- Glowing Red Effect Filter -->
+                        <filter id="redGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="2.5" result="blur" />
+                            <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Background Soft Shadow Heart -->
+                    <use href="#heartPath" stroke="rgba(230, 0, 57, 0.18)" stroke-width="26" fill="none" />
+
+                    <!-- Center Photo embedded directly in SVG clipPath for 100% export reliability -->
+                    <g clip-path="url(#heartCenterClip)" id="svgImageGroup">
+                        <rect x="100" y="80" width="400" height="380" fill="#fce4ec" />
+                        <image id="svgHeartImage" href="assets/photo1.jpg" x="100" y="80" width="400" height="380" preserveAspectRatio="xMidYMid slice" />
+                    </g>
+
+                    <!-- Red Text Boundary repeating "everything will be fine pibu" -->
+                    <text class="heart-text-boundary" filter="url(#redGlow)">
+                        <textPath id="heartTextPath" href="#heartPath" startOffset="0%">
+                            everything will be fine pibu • everything will be fine pibu • everything will be fine pibu • everything will be fine pibu • 
+                        </textPath>
+                    </text>
+                </svg>
+
+                <!-- Center Play Button Overlay -->
+                <div class="play-overlay" id="playOverlay">
+                    <button id="btnCenterPlay" class="center-play-btn" aria-label="Play Surprise">
+                        <div class="play-icon-ring">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <span class="play-btn-label">Tap to Play Surprise 💕</span>
+                    </button>
+                </div>
+
+                <!-- Funny Caption Tag -->
+                <div class="funny-caption-badge" id="funnyCaption">The Handsome Serious Pibu 🤓</div>
+
+            </div>
+
+        </section>
+
+        <!-- Bottom Affirmation Badge -->
+        <footer class="bottom-card">
+            <div class="affirmation-badge">
+                <i class="fa-solid fa-sparkles"></i>
+                <span id="displaySentence">everything will be fine pibu</span>
+                <i class="fa-solid fa-heart red-heart-icon"></i>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Floating Minimal Toolbar (Music + Download only) -->
+    <div class="floating-controls">
+        <button id="btnMusic" class="control-btn" title="Toggle Music" aria-label="Toggle Audio">
+            <i class="fa-solid fa-music"></i>
+            <span class="btn-tooltip">Music</span>
+        </button>
+
+        <button id="btnDownload" class="control-btn primary" title="Download Heart Memory" aria-label="Download Card">
+            <i class="fa-solid fa-download"></i>
+            <span class="btn-tooltip">Download</span>
+        </button>
+    </div>
+
+    <!-- Include html2canvas for card export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
