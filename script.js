@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 5 Photos Array matching your GitHub file names exactly
     const pibuPhotos = [
-        { src: 'photo1.jpg', caption: 'The Handsome Serious Pibu 🤓', anim: 'bounce-in' },
+        { src: 'photo1.jpg', caption: 'The Handsome Twin/Maker of this page 🤓', anim: 'bounce-in' },
         { src: 'photo2.png', caption: 'Sukuna Mode Pibu 😈⚡', anim: 'bounce-wobble' },
         { src: 'photo3.jpg', caption: 'Cake Face Sweet Tooth 🎂🤪', anim: 'bounce-pop' },
         { src: 'photo4.png', caption: 'Bandana Ninja Pibu 🥷👍', anim: 'bounce-in' },
