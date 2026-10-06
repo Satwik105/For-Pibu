@@ -20,45 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let audioContext = null;
     let musicInterval = null;
     
+    // 5 Photos Array matching your GitHub file names exactly
     const pibuPhotos = [
-        { src: 'photo1.jpg', altSrc: 'assets/photo1.jpg', base64: '', caption: 'The Handsome Serious Pibu 🤓', anim: 'bounce-in' },
-        { src: 'photo2.png', altSrc: 'assets/photo2.png', base64: '', caption: 'Sukuna Mode Pibu 😈⚡', anim: 'bounce-wobble' },
-        { src: 'photo3.jpg', altSrc: 'assets/photo3.jpg', base64: '', caption: 'Cake Face Sweet Tooth 🎂🤪', anim: 'bounce-pop' },
-        { src: 'photo4.png', altSrc: 'assets/photo4.png', base64: '', caption: 'Bandana Ninja Pibu 🥷👍', anim: 'bounce-in' },
-        { src: 'photo5.jpg', altSrc: 'assets/photo5.jpg', base64: '', caption: 'Pibu, Bestie & The Puppy 🐶💕', anim: 'bounce-wobble' }
+        { src: 'photo1.jpg', caption: 'The Handsome Serious Pibu 🤓', anim: 'bounce-in' },
+        { src: 'photo2.png', caption: 'Sukuna Mode Pibu 😈⚡', anim: 'bounce-wobble' },
+        { src: 'photo3.jpg', caption: 'Cake Face Sweet Tooth 🎂🤪', anim: 'bounce-pop' },
+        { src: 'photo4.png', caption: 'Bandana Ninja Pibu 🥷👍', anim: 'bounce-in' },
+        { src: 'photo5.jpg', caption: 'Pibu, Bestie & The Puppy 🐶💕', anim: 'bounce-wobble' }
     ];
     
     let photoIndex = 0;
     let slideshowInterval = null;
 
-    async function loadPhotoAsBase64(primaryPath, fallbackPath) {
-        try {
-            let response = await fetch(primaryPath);
-            if (!response.ok) {
-                response = await fetch(fallbackPath);
-            }
-            if (!response.ok) throw new Error('Photo not found');
-            const blob = await response.blob();
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(blob);
-            });
-        } catch (err) {
-            return primaryPath;
-        }
+    // Direct cross-browser SVG image linker
+    function setHeartPhoto(url) {
+        if (!svgHeartImage) return;
+        svgHeartImage.setAttribute('href', url);
+        svgHeartImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', url);
     }
 
-    async function preloadPhotosAsBase64() {
-        for (let item of pibuPhotos) {
-            item.base64 = await loadPhotoAsBase64(item.src, item.altSrc);
-        }
-        if (pibuPhotos[0].base64) {
-            svgHeartImage.setAttribute('href', pibuPhotos[0].base64);
-        }
-    }
-
-    preloadPhotosAsBase64();
+    setHeartPhoto(pibuPhotos[0].src);
 
     function updateHeartTextBoundary() {
         if (!heartPath || !heartTextPath) return;
@@ -100,10 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentItem = pibuPhotos[photoIndex];
 
         svgImageGroup.className.baseVal = '';
-        void svgImageGroup.offsetWidth;
+        void svgImageGroup.offsetWidth; // Force reflow
 
-        const imageUri = currentItem.base64 || currentItem.src;
-        svgHeartImage.setAttribute('href', imageUri);
+        setHeartPhoto(currentItem.src);
         svgImageGroup.className.baseVal = currentItem.anim;
 
         if (funnyCaption) {
@@ -221,11 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
-            const currentItem = pibuPhotos[photoIndex];
-            if (currentItem && currentItem.base64) {
-                svgHeartImage.setAttribute('href', currentItem.base64);
-            }
-
             const canvas = await html2canvas(captureArea, {
                 backgroundColor: '#fde8ed',
                 scale: 2,
