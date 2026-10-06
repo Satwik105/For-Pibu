@@ -1,11 +1,5 @@
-/* ==========================================
-   FLORAL HEART SANCTUARY - SCRIPT.JS
-   Mobile Optimized & SVG Canvas Capture Fix
-   ========================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- DOM Elements ---
     const heartPath = document.getElementById('heartPath');
     const heartTextPath = document.getElementById('heartTextPath');
     const displaySentence = document.getElementById('displaySentence');
@@ -21,46 +15,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnDownload = document.getElementById('btnDownload');
     const petalsContainer = document.getElementById('petalsContainer');
 
-    // --- State Variables ---
     const currentText = "everything will be fine pibu";
     let isPlayingAudio = false;
     let audioContext = null;
     let musicInterval = null;
     
-    // 5 Photos Array with Funny Captions & Animations
     const pibuPhotos = [
-        { src: 'assets/photo1.jpg', base64: '', caption: 'The Handsome Serious Pibu 🤓', anim: 'bounce-in' },
-        { src: 'assets/photo2.png', base64: '', caption: 'Sukuna Mode Pibu 😈⚡', anim: 'bounce-wobble' },
-        { src: 'assets/photo3.jpg', base64: '', caption: 'Cake Face Sweet Tooth 🎂🤪', anim: 'bounce-pop' },
-        { src: 'assets/photo4.png', base64: '', caption: 'Bandana Ninja Pibu 🥷👍', anim: 'bounce-in' },
-        { src: 'assets/photo5.jpg', base64: '', caption: 'Pibu, Bestie & The Iggy 🐶💕', anim: 'bounce-wobble' }
+        { src: 'photo1.jpg', altSrc: 'assets/photo1.jpg', base64: '', caption: 'The Handsome Serious Pibu 🤓', anim: 'bounce-in' },
+        { src: 'photo2.png', altSrc: 'assets/photo2.png', base64: '', caption: 'Sukuna Mode Pibu 😈⚡', anim: 'bounce-wobble' },
+        { src: 'photo3.jpg', altSrc: 'assets/photo3.jpg', base64: '', caption: 'Cake Face Sweet Tooth 🎂🤪', anim: 'bounce-pop' },
+        { src: 'photo4.png', altSrc: 'assets/photo4.png', base64: '', caption: 'Bandana Ninja Pibu 🥷👍', anim: 'bounce-in' },
+        { src: 'photo5.jpg', altSrc: 'assets/photo5.jpg', base64: '', caption: 'Pibu, Bestie & The Puppy 🐶💕', anim: 'bounce-wobble' }
     ];
     
     let photoIndex = 0;
     let slideshowInterval = null;
 
-    // ==========================================
-    // 1. PRELOAD PHOTOS TO BASE64 FOR RELIABLE DOWNLOAD CAPTURE
-    // ==========================================
+    async function loadPhotoAsBase64(primaryPath, fallbackPath) {
+        try {
+            let response = await fetch(primaryPath);
+            if (!response.ok) {
+                response = await fetch(fallbackPath);
+            }
+            if (!response.ok) throw new Error('Photo not found');
+            const blob = await response.blob();
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        } catch (err) {
+            return primaryPath;
+        }
+    }
+
     async function preloadPhotosAsBase64() {
         for (let item of pibuPhotos) {
-            try {
-                const response = await fetch(item.src);
-                const blob = await response.blob();
-                await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        item.base64 = reader.result;
-                        resolve();
-                    };
-                    reader.readAsDataURL(blob);
-                });
-            } catch (err) {
-                console.warn('Fallback to direct path for', item.src, err);
-                item.base64 = item.src;
-            }
+            item.base64 = await loadPhotoAsBase64(item.src, item.altSrc);
         }
-        // Set initial photo to preloaded base64
         if (pibuPhotos[0].base64) {
             svgHeartImage.setAttribute('href', pibuPhotos[0].base64);
         }
@@ -68,9 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     preloadPhotosAsBase64();
 
-    // ==========================================
-    // 2. HEART TEXT OUTLINE REPETITION LOGIC
-    // ==========================================
     function updateHeartTextBoundary() {
         if (!heartPath || !heartTextPath) return;
 
@@ -106,22 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHeartTextBoundary();
     window.addEventListener('resize', updateHeartTextBoundary);
 
-    // ==========================================
-    // 3. FUNNY BOUNCE SLIDESHOW & PLAY BUTTON
-    // ==========================================
     function nextPhotoSlide() {
         photoIndex = (photoIndex + 1) % pibuPhotos.length;
         const currentItem = pibuPhotos[photoIndex];
 
-        // Trigger funny SVG bounce animation
         svgImageGroup.className.baseVal = '';
-        void svgImageGroup.offsetWidth; // Force reflow
+        void svgImageGroup.offsetWidth;
 
         const imageUri = currentItem.base64 || currentItem.src;
         svgHeartImage.setAttribute('href', imageUri);
         svgImageGroup.className.baseVal = currentItem.anim;
 
-        // Update Funny Caption Badge
         if (funnyCaption) {
             funnyCaption.textContent = currentItem.caption;
             funnyCaption.style.animation = 'none';
@@ -135,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         slideshowInterval = setInterval(nextPhotoSlide, 3200);
     }
 
-    // Play Button Listener
     btnCenterPlay.addEventListener('click', () => {
         playOverlay.classList.add('hidden');
 
@@ -147,9 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         startSlideshow();
     });
 
-    // ==========================================
-    // 4. FLOATING PETALS GENERATOR
-    // ==========================================
     function createPetal() {
         const petal = document.createElement('div');
         petal.classList.add('petal');
@@ -175,9 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(createPetal, 900);
 
-    // ==========================================
-    // 5. SOFT AMBIENT MUSIC (WEB AUDIO API)
-    // ==========================================
     function playMelodyNote(freq, duration = 1.2) {
         if (!audioContext) return;
 
@@ -236,9 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnMusic.addEventListener('click', toggleAudio);
 
-    // ==========================================
-    // 6. FIXED DOWNLOAD CARD CAPTURE (100% PHOTO CAPTURE)
-    // ==========================================
     btnDownload.addEventListener('click', async () => {
         const captureArea = document.getElementById('captureArea');
         if (!captureArea) return;
@@ -247,13 +221,11 @@ document.addEventListener('DOMContentLoaded', () => {
         btnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
-            // Ensure current photo is set as base64 in SVG image href before capturing
             const currentItem = pibuPhotos[photoIndex];
             if (currentItem && currentItem.base64) {
                 svgHeartImage.setAttribute('href', currentItem.base64);
             }
 
-            // Capture using html2canvas with full CORS and scale settings
             const canvas = await html2canvas(captureArea, {
                 backgroundColor: '#fde8ed',
                 scale: 2,
