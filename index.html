@@ -35,7 +35,7 @@
             
             <!-- SVG Container holding Heart Text Boundary & Clipped Central Photo -->
             <div class="heart-svg-wrapper">
-                <svg id="heartSvg" viewBox="0 0 600 580" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <svg id="heartSvg" viewBox="0 0 600 580" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <defs>
                         <!-- Heart Path for Text Outline -->
                         <path id="heartPath" 
@@ -68,10 +68,10 @@
                     <!-- Background Soft Shadow Heart -->
                     <use href="#heartPath" stroke="rgba(230, 0, 57, 0.18)" stroke-width="26" fill="none" />
 
-                    <!-- Center Photo embedded directly in SVG clipPath -->
+                    <!-- Center Photo linking directly to photo1.jpg -->
                     <g clip-path="url(#heartCenterClip)" id="svgImageGroup">
                         <rect x="100" y="80" width="400" height="380" fill="#fce4ec" />
-                        <image id="svgHeartImage" href="photo1.jpg" x="100" y="80" width="400" height="380" preserveAspectRatio="xMidYMid slice" />
+                        <image id="svgHeartImage" href="photo1.jpg" xlink:href="photo1.jpg" x="100" y="80" width="400" height="380" preserveAspectRatio="xMidYMid slice" />
                     </g>
 
                     <!-- Red Text Boundary repeating "everything will be fine pibu" -->
